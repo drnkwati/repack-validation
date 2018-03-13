@@ -1,0 +1,40 @@
+{
+    "name": "drnkwati/repack-validation",
+    "description": "Illuminate Validation Package With Minimal Dependencies.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Taylor Otwell",
+            "email": "taylor@laravel.com"
+        },
+        {
+            "name": "Nkwati Divine",
+            "email": "drnkwati@gmail.com",
+            "homepage": "http://dnkwati.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/container": "5.0.*",
+        "illuminate/contracts": "5.0.*",
+        "illuminate/support": "5.0.*",
+        "drnkwati/repack-translation": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Illuminate\\": "src/Illuminate/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.0-dev"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
