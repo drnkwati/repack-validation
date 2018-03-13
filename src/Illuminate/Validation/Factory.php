@@ -10,6 +10,7 @@ class Factory
 {
     /**
      * The Translator implementation.
+     *
      * @var \Illuminate\Translation\Translator
      */
     protected $translator;
