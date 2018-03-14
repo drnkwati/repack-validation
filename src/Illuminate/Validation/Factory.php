@@ -3,13 +3,16 @@
 namespace Illuminate\Validation;
 
 use Closure;
-use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Validation\Factory as FactoryContract;
+use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
 
-class Factory
+class Factory implements FactoryContract
 {
     /**
      * The Translator implementation.
+     *
      * @var \Illuminate\Translation\Translator
      */
     protected $translator;
@@ -24,7 +27,7 @@ class Factory
     /**
      * The IoC container instance.
      *
-     * @var \Illuminate\Container\Container
+     * @var \Illuminate\Contracts\Container\Container
      */
     protected $container;
 
@@ -33,28 +36,28 @@ class Factory
      *
      * @var array
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * All of the custom implicit validator extensions.
      *
      * @var array
      */
-    protected $implicitExtensions = array();
+    protected $implicitExtensions = [];
 
     /**
      * All of the custom validator message replacers.
      *
      * @var array
      */
-    protected $replacers = array();
+    protected $replacers = [];
 
     /**
      * All of the fallback messages for custom rules.
      *
      * @var array
      */
-    protected $fallbackMessages = array();
+    protected $fallbackMessages = [];
 
     /**
      * The Validator resolver instance.
@@ -66,8 +69,8 @@ class Factory
     /**
      * Create a new Validator factory instance.
      *
-     * @param  \Illuminate\Translation\Translator $translator
-     * @param  \Illuminate\Container\Container    $container
+     * @param  \Illuminate\Translation\Translator        $translator
+     * @param  \Illuminate\Contracts\Container\Container $container
      * @return void
      */
     public function __construct(Translator $translator, Container $container = null)
@@ -85,7 +88,7 @@ class Factory
      * @param  array                              $customAttributes
      * @return \Illuminate\Validation\Validator
      */
-    public function make(array $data, array $rules, array $messages = array(), array $customAttributes = array())
+    public function make(array $data, array $rules, array $messages = [], array $customAttributes = [])
     {
         // The presence verifier is responsible for checking the unique and exists data
         // for the validator. It is behind an interface so that multiple versions of
@@ -143,9 +146,9 @@ class Factory
     {
         if (is_null($this->resolver)) {
             return new Validator($this->translator, $data, $rules, $messages, $customAttributes);
-        } else {
-            return call_user_func($this->resolver, $this->translator, $data, $rules, $messages, $customAttributes);
         }
+
+        return call_user_func($this->resolver, $this->translator, $data, $rules, $messages, $customAttributes);
     }
 
     /**
@@ -161,9 +164,8 @@ class Factory
         $this->extensions[$rule] = $extension;
 
         if ($message) {
-            $this->fallbackMessages[snake_case($rule)] = $message;
+            $this->fallbackMessages[Str::snake($rule)] = $message;
         }
-
     }
 
     /**
@@ -179,9 +181,8 @@ class Factory
         $this->implicitExtensions[$rule] = $extension;
 
         if ($message) {
-            $this->fallbackMessages[snake_case($rule)] = $message;
+            $this->fallbackMessages[Str::snake($rule)] = $message;
         }
-
     }
 
     /**
@@ -199,7 +200,7 @@ class Factory
     /**
      * Set the Validator instance resolver.
      *
-     * @param  Closure $resolver
+     * @param  \Closure $resolver
      * @return void
      */
     public function resolver(Closure $resolver)
@@ -237,5 +238,4 @@ class Factory
     {
         $this->verifier = $presenceVerifier;
     }
-
 }
