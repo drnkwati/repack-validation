@@ -16,7 +16,6 @@
     "require": {
         "php": ">=5.3.0",
         "illuminate/container": "4.1.*",
-        "illuminate/support": "4.1.*",
         "drnkwati/repack-translation": "dev-master"
     },
     "require-dev": {
@@ -33,6 +32,10 @@
         "branch-alias": {
             "dev-master": "4.1-dev"
         }
+    },
+    "suggest": {
+        "Illuminate/Support": "You must install Illuminate\\Support >=4.1. We avoid requiring in composer.json to provide developer flexibility.",
+        "drnkwati/repack": "You may install drnkwati\\repack as alternative to Illuminate\\Support."
     },
     "config": {
         "preferred-install": "dist",
